@@ -1,0 +1,642 @@
+// 1. Box Model
+// The CSS box model describes the rectangular boxes generated for elements.
+
+/* Box model parts from inside to outside:
+ * 1. Content - The actual content (text, images, etc.)
+ * 2. Padding - Space between content and border
+ * 3. Border - Line around padding
+ * 4. Margin - Space outside the border
+ */
+
+.box-model-example {
+    width: 100px;  /* Content width */
+    height: 100px; /* Content height */
+    padding: 20px; /* Space around content */
+    border: 5px solid black; /* Border around padding */
+    margin: 10px; /* Space outside border */
+  }
+  
+  /* Total width calculation (default box-sizing):
+   * 100px (content) + 40px (padding) + 10px (border) = 150px
+   */
+  
+  /* Box-sizing property changes how width/height are calculated */
+  .box-sizing-example {
+    box-sizing: border-box; /* Width/height include padding and border */
+    width: 100px;
+    padding: 20px;
+    border: 5px solid black;
+    /* Total width: exactly 100px (content area reduced) */
+  }
+  
+  // 2. Positioning
+  // CSS positioning defines how elements are positioned in the document flow.
+  
+  /* Position types:
+   * 1. static - Default, follows normal document flow
+   * 2. relative - Positioned relative to its normal position
+   * 3. absolute - Positioned relative to nearest positioned ancestor
+   * 4. fixed - Positioned relative to viewport, stays fixed when scrolling
+   * 5. sticky - Hybrid of relative and fixed
+   */
+  
+  .position-static {
+    position: static;
+    /* No effect from top, right, bottom, left properties */
+  }
+  
+  .position-relative {
+    position: relative;
+    top: 10px;
+    left: 20px;
+    /* Offset from normal position */
+  }
+  
+  .position-absolute {
+    position: absolute;
+    top: 50px;
+    left: 50px;
+    /* Positioned relative to nearest positioned ancestor */
+    /* Removed from normal document flow */
+  }
+  
+  .position-fixed {
+    position: fixed;
+    top: 0;
+    right: 0;
+    /* Stays fixed during scroll */
+    /* Removed from normal document flow */
+  }
+  
+  .position-sticky {
+    position: sticky;
+    top: 10px;
+    /* Acts like relative until scroll threshold, then like fixed */
+  }
+  
+  // 3. Flexbox
+  // Flexbox is a one-dimensional layout method for arranging items in rows or columns.
+  
+  .flex-container {
+    display: flex;
+    flex-direction: row; /* row, row-reverse, column, column-reverse */
+    flex-wrap: wrap; /* nowrap, wrap, wrap-reverse */
+    justify-content: space-between; /* flex-start, flex-end, center, space-around, space-evenly */
+    align-items: center; /* flex-start, flex-end, center, stretch, baseline */
+    align-content: space-around; /* (for multiple lines) flex-start, flex-end, center, stretch, space-between, space-around */
+    gap: 10px; /* Space between flex items */
+  }
+  
+  .flex-item {
+    order: 2; /* Controls order of items (default: 0) */
+    flex-grow: 1; /* Ability to grow (default: 0) */
+    flex-shrink: 0; /* Ability to shrink (default: 1) */
+    flex-basis: auto; /* Default size (auto, 100px, etc.) */
+    align-self: flex-end; /* Override align-items for specific item */
+    
+    /* Shorthand */
+    flex: 1 0 auto; /* grow shrink basis */
+  }
+  
+  // 4. Grid
+  // CSS Grid is a two-dimensional layout system for rows and columns.
+  
+  .grid-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr; /* Three columns with proportional widths */
+    grid-template-rows: 100px auto 100px; /* Three rows with mixed sizes */
+    grid-gap: 10px; /* Gap between grid items */
+    
+    /* Named grid areas */
+    grid-template-areas:
+      "header header header"
+      "sidebar content content"
+      "footer footer footer";
+      
+    justify-items: center; /* Horizontal alignment within cells */
+    align-items: stretch; /* Vertical alignment within cells */
+    justify-content: space-between; /* Horizontal alignment of entire grid */
+    align-content: start; /* Vertical alignment of entire grid */
+  }
+  
+  .grid-item {
+    /* Placement based on lines */
+    grid-column: 1 / 3; /* Start at line 1, end at line 3 */
+    grid-row: 2 / 4; /* Start at line 2, end at line 4 */
+    
+    /* Or use placement based on names */
+    grid-area: header; /* Places in area named "header" */
+    
+    /* Override alignment for specific item */
+    justify-self: end;
+    align-self: center;
+  }
+  
+  // 5. Media Queries
+  // Media queries allow applying CSS only when certain conditions are met.
+  
+  /* Basic media query for screen width */
+  @media screen and (max-width: 600px) {
+    .responsive-element {
+      width: 100%;
+      font-size: 14px;
+    }
+  }
+  
+  /* Combining multiple conditions */
+  @media screen and (min-width: 600px) and (max-width: 900px) {
+    .tablet-styles {
+      display: flex;
+      padding: 20px;
+    }
+  }
+  
+  /* Media query for print */
+  @media print {
+    .no-print {
+      display: none;
+    }
+    
+    body {
+      font-size: 12pt;
+      color: black;
+      background: white;
+    }
+  }
+  
+  /* Media query for device orientation */
+  @media (orientation: landscape) {
+    .landscape-only {
+      display: block;
+    }
+  }
+  
+  // 6. CSS Specificity
+  // Specificity determines which CSS rule applies when multiple rules target the same element.
+  
+  /* Specificity hierarchy (lowest to highest):
+   * 1. Universal selectors (*) - 0,0,0,0
+   * 2. Element type selectors - 0,0,0,1
+   * 3. Class selectors, attribute selectors, pseudo-classes - 0,0,1,0
+   * 4. ID selectors - 0,1,0,0
+   * 5. Inline styles - 1,0,0,0
+   * 6. !important - Overrides all other styles
+   */
+  
+  /* Examples with increasing specificity */
+  * { color: gray; } /* Universal - lowest specificity */
+  p { color: black; } /* Element */
+  .text { color: blue; } /* Class */
+  p.text { color: green; } /* Element + class */
+  #unique { color: red; } /* ID - high specificity */
+  p#unique.text { color: purple; } /* ID + element + class */
+  p { color: orange !important; } /* !important - highest */
+  
+  // 7. CSS Preprocessors (SASS/SCSS/LESS)
+  // Preprocessors extend CSS with variables, nesting, mixins, and more.
+  
+  /* SCSS example - variables */
+  $primary-color: #336699;
+  $padding-base: 15px;
+  
+  .button {
+    background-color: $primary-color;
+    padding: $padding-base;
+    border-radius: $padding-base / 3;
+  }
+  
+  /* SCSS example - nesting */
+  .navigation {
+    background: #f0f0f0;
+    
+    ul {
+      list-style: none;
+      margin: 0;
+      
+      li {
+        display: inline-block;
+        
+        a {
+          color: $primary-color;
+          
+          &:hover {
+            text-decoration: none;
+          }
+        }
+      }
+    }
+  }
+  
+  /* SCSS example - mixins */
+  @mixin border-radius($radius) {
+    -webkit-border-radius: $radius;
+    -moz-border-radius: $radius;
+    border-radius: $radius;
+  }
+  
+  .box {
+    @include border-radius(5px);
+  }
+  
+  // 8. CSS Animations and Transitions
+  // Animations and transitions create smooth changes between property values.
+  
+  /* Transition example */
+  .transition-example {
+    width: 100px;
+    height: 100px;
+    background-color: blue;
+    transition: width 0.5s ease, height 0.5s ease, background-color 1s ease;
+  }
+  
+  .transition-example:hover {
+    width: 200px;
+    height: 200px;
+    background-color: red;
+  }
+  
+  /* Animation example with keyframes */
+  @keyframes slide-in {
+    0% {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  .animation-example {
+    animation-name: slide-in;
+    animation-duration: 1s;
+    animation-timing-function: ease-out;
+    animation-delay: 0.5s;
+    animation-iteration-count: 1;
+    animation-direction: normal;
+    animation-fill-mode: forwards;
+    
+    /* Shorthand */
+    animation: slide-in 1s ease-out 0.5s 1 normal forwards;
+  }
+  
+  // 9. CSS Modules & CSS-in-JS
+  // Modern approaches to CSS organization in component-based architectures.
+  
+  /* CSS Modules example (filename: Button.module.css) */
+  .button {
+    padding: 10px 15px;
+    background-color: #0066cc;
+    color: white;
+    border-radius: 4px;
+  }
+  
+  /* Usage in React:
+     import styles from './Button.module.css';
+     
+     function Button() {
+       return <button className={styles.button}>Click me</button>;
+     }
+  */
+  
+  /* CSS-in-JS examples (using styled-components) */
+  /*
+     // In JavaScript file:
+     import styled from 'styled-components';
+     
+     const Button = styled.button`
+       padding: 10px 15px;
+       background-color: ${props => props.primary ? '#0066cc' : 'gray'};
+       color: white;
+       border-radius: 4px;
+       
+       &:hover {
+         opacity: 0.8;
+       }
+     `;
+     
+     function App() {
+       return <Button primary>Click me</Button>;
+     }
+  */
+  
+  // 10. CSS Custom Properties (Variables)
+  // Custom properties allow storing values for reuse throughout a document.
+  
+  :root {
+    --primary-color: #336699;
+    --secondary-color: #cc6633;
+    --base-spacing: 16px;
+    --font-family-main: 'Arial', sans-serif;
+  }
+  
+  .section {
+    color: var(--primary-color);
+    margin-bottom: calc(var(--base-spacing) * 2);
+    font-family: var(--font-family-main);
+  }
+  
+  .button {
+    background-color: var(--primary-color);
+    padding: var(--base-spacing);
+  }
+  
+  .button-secondary {
+    background-color: var(--secondary-color);
+  }
+  
+  /* Media queries can override variables */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --primary-color: #66aaff;
+      --secondary-color: #ff9966;
+    }
+  }
+  
+  // 11. BEM Methodology
+  // BEM (Block, Element, Modifier) is a naming convention for CSS classes.
+  
+  /* Structure:
+   * Block: Standalone component (.block)
+   * Element: Part of a block (.block__element)
+   * Modifier: Variation of block or element (.block--modifier, .block__element--modifier)
+   */
+  
+  /* Example of BEM naming */
+  .card {
+    width: 300px;
+    padding: 20px;
+  }
+  
+  .card__title {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .card__content {
+    line-height: 1.5;
+  }
+  
+  .card--featured {
+    border: 2px solid gold;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .card__title--large {
+    font-size: 32px;
+  }
+  
+  /* HTML usage: 
+     <div class="card card--featured">
+       <h2 class="card__title card__title--large">Title</h2>
+       <div class="card__content">Content here</div>
+     </div>
+  */
+  
+  // 12. CSS Containment
+  // The CSS contain property improves performance by isolating parts of the page.
+  
+  .contained-section {
+    contain: content; /* Isolates content from the rest of the page */
+  }
+  
+  .fully-contained {
+    contain: strict; /* Combines size, layout, style, paint containment */
+  }
+  
+  .layout-contained {
+    contain: layout; /* Element's internal layout isolated from the rest of the page */
+  }
+  
+  /* Containment types:
+   * size: Element's size will not be affected by its descendants
+   * layout: Internal layout is isolated from rest of the page
+   * style: Effects like counters restricted to element's subtree
+   * paint: Descendants don't display outside element's bounds
+   * content: Combines style, layout, and paint
+   */
+  
+  // 13. Responsive Typography
+  // Techniques for scaling text based on screen size.
+  
+  /* Pixel-based (not responsive) */
+  .non-responsive-text {
+    font-size: 16px;
+  }
+  
+  /* Using relative units */
+  body {
+    font-size: 16px; /* Base size for calculations */
+  }
+  
+  .relative-text {
+    font-size: 1.5rem; /* Relative to root element */
+  }
+  
+  .paragraph {
+    font-size: 1em; /* Relative to parent font size */
+  }
+  
+  /* Using viewport units */
+  .viewport-text {
+    font-size: 3vw; /* 3% of viewport width */
+  }
+  
+  /* Using calc for minimum sizes */
+  .dynamic-text {
+    font-size: calc(16px + 1vw); /* Minimum 16px plus viewport scaling */
+  }
+  
+  /* Using clamp for setting min, preferred, and max sizes */
+  .clamped-text {
+    font-size: clamp(1rem, 2.5vw, 2rem); /* min, preferred, max */
+  }
+  
+  // 14. CSS Accessibility
+  // Best practices for creating accessible styles.
+  
+  /* Sufficient color contrast */
+  .accessible-text {
+    color: #333333; /* Dark gray on white has good contrast */
+    background-color: white;
+  }
+  
+  /* Focus styles for keyboard navigation */
+  .accessible-button:focus {
+    outline: 3px solid #4d90fe; /* Visible focus ring */
+    outline-offset: 2px;
+  }
+  
+  /* High contrast mode detection */
+  @media (forced-colors: active) {
+    .button {
+      border: 1px solid currentColor;
+    }
+  }
+  
+  /* Text sizing */
+  html {
+    font-size: 100%; /* Respects user's browser settings */
+  }
+  
+  body {
+    line-height: 1.5; /* Adequate spacing between lines */
+  }
+  
+  /* Skip navigation link for keyboard users */
+  .skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: #000;
+    color: white;
+    padding: 8px;
+    z-index: 100;
+  }
+  
+  .skip-link:focus {
+    top: 0;
+  }
+  
+  // 15. CSS Transforms and Perspective
+  // CSS transforms allow rotating, scaling, moving, and skewing elements.
+  
+  .transform-2d {
+    /* 2D transforms */
+    transform: translate(50px, 20px) rotate(45deg) scale(1.5) skew(10deg, 5deg);
+  }
+  
+  .transform-individual {
+    /* Individual 2D transforms */
+    transform: translateX(20px);
+    transform: translateY(20px);
+    transform: rotate(45deg);
+    transform: scale(1.5);
+    transform: scaleX(1.5);
+    transform: scaleY(0.5);
+    transform: skew(10deg, 5deg);
+  }
+  
+  .transform-3d {
+    /* 3D transforms */
+    transform: rotateX(45deg) rotateY(30deg) rotateZ(15deg) translateZ(50px);
+    transform-style: preserve-3d; /* Maintains 3D positioning for children */
+    perspective: 1000px; /* Depth perception for 3D transforms */
+  }
+  
+  .transform-origin {
+    transform-origin: top left; /* Point around which transform happens */
+    transform: rotate(45deg);
+  }
+  
+  // 16. CSS Filters
+  // Filters apply visual effects like blur and grayscale to elements.
+  
+  .filtered-image {
+    /* Individual filters */
+    filter: blur(5px);
+    filter: brightness(150%);
+    filter: contrast(200%);
+    filter: grayscale(100%);
+    filter: hue-rotate(90deg);
+    filter: invert(100%);
+    filter: opacity(50%);
+    filter: saturate(200%);
+    filter: sepia(100%);
+    filter: drop-shadow(5px 5px 10px black);
+    
+    /* Combining multiple filters */
+    filter: contrast(175%) brightness(103%) grayscale(30%);
+  }
+  
+  .backdrop-filter {
+    /* Apply filter effects to content behind an element */
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+  
+  // 17. CSS Variables vs. Preprocessor Variables
+  // Comparison of CSS custom properties (variables) and preprocessor variables.
+  
+  /* SCSS variables (compiled at build time) */
+  $primary-color: blue;
+  $header-height: 60px;
+  
+  .header-scss {
+    height: $header-height;
+    background-color: $primary-color;
+  }
+  
+  /* CSS variables (run-time, dynamic) */
+  :root {
+    --primary-color: blue;
+    --header-height: 60px;
+  }
+  
+  .header-css {
+    height: var(--header-height);
+    background-color: var(--primary-color);
+  }
+  
+  /* CSS variables can be changed dynamically */
+  @media (max-width: 600px) {
+    :root {
+      --header-height: 40px;
+    }
+  }
+  
+  /* CSS variables can be modified with JavaScript:
+     document.documentElement.style.setProperty('--primary-color', 'red');
+  */
+  
+  // 18. CSS Cross-Browser Compatibility
+  // Strategies for consistent CSS across different browsers.
+  
+  /* Vendor prefixes for experimental features */
+  .prefixed {
+    -webkit-border-radius: 5px; /* Safari, Chrome */
+    -moz-border-radius: 5px; /* Firefox */
+    -ms-border-radius: 5px; /* Internet Explorer */
+    -o-border-radius: 5px; /* Opera */
+    border-radius: 5px; /* Standard */
+    
+    display: -webkit-flex; /* Safari */
+    display: -ms-flexbox; /* IE10 */
+    display: flex; /* Standard */
+  }
+  
+  /* Feature detection with @supports */
+  @supports (display: grid) {
+    .modern-layout {
+      display: grid;
+    }
+  }
+  
+  @supports not (display: grid) {
+    .fallback-layout {
+      display: flex;
+    }
+  }
+  
+  /* CSS resets for consistent starting point */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Normalize.css approach */
+  html {
+    line-height: 1.15;
+    -webkit-text-size-adjust: 100%;
+  }
+  
+  /* Browser-specific hacks (use cautiously) */
+  @media screen and (-webkit-min-device-pixel-ratio: 0) {
+    /* Chrome/Safari-specific styles */
+  }
+  
+  @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    /* IE-specific styles */
+  }
