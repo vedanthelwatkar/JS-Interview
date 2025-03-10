@@ -536,3 +536,35 @@ function flattenToDepth(arr, depth = 1) {
 
 console.log(flattenToDepth([1, [2, [3, 4]], 5], 1)); // [1, 2, [3, 4], 5]
 console.log(flattenToDepth([1, [2, [3, 4]], 5], 2)); // [1, 2, 3, 4, 5]
+
+// promise chain
+function getUser(user) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve({ id: user, name: "vedant" });
+    }, 1000);
+  });
+}
+
+function getDetails(user) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve({ company: "ARWL" });
+    }, 1000);
+  });
+}
+
+function updateDetails(company) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      company = "unifynd";
+      resolve(company);
+    }, 1000);
+  });
+}
+
+getUser(3)
+  .then(getDetails)
+  .then(updateDetails)
+  .then(console.log)
+  .catch((error) => console.log(error));
